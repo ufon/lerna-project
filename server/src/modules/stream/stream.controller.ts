@@ -1,0 +1,27 @@
+import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { StreamService } from './stream.service';
+import { Stream } from './stream.entity';
+import { CreateStreamDto } from './dto/create-stream.dto';
+
+@Controller('streams')
+export class StreamController {
+  constructor(private readonly streamService: StreamService) {}
+
+  @Get()
+  root(): Promise<Stream[]> {
+    return this.streamService.findAll();
+  }
+
+  @Get(':id')
+  findOne(
+    @Param('id')
+    id,
+  ): Promise<Stream> {
+    return this.streamService.findOneById(id);
+  }
+
+  @Post()
+  async create(@Body() createStreamDto: CreateStreamDto) {
+    return this.streamService.create(createStreamDto);
+  }
+}
