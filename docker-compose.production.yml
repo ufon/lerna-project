@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  lerna_db:
+    container_name: lerna_db
+    hostname: lerna_db
+    image: mysql:5.7
+    volumes:
+      - lerna_db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${TYPEORM_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${TYPEORM_PASSWORD}
+      - MYSQL_USER=${TYPEORM_USERNAME}
+    ports:
+      - "3306:3306"
+  lerna_api:
+    container_name: lerna_api
+    build: ./server
+    volumes:
+      - ./server/src:/var/www/lerna-be/src
+    ports:
+      - "3000:3000"
+    env_file: "./server/.env"
+    depends_on:
+      - lerna_db
+    links:
+      - lerna_db
+  lerna_media:
+    container_name: lerna_media
+    build: ./media
+    ports:
+      - 1935:1935
+      - 8080:80
+      - 8443:443
+    volumes:
+      - ./media/certs:/opt/certs
+    depends_on:
+      - lerna_api
+      - lerna_db
+    links:
+      - lerna_api
+volumes:
+  lerna_db_data:

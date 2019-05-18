@@ -25,6 +25,9 @@ export class Stream {
   @Column()
   slug: string;
 
+  @Column()
+  active: boolean;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created: Date;
 

@@ -41,18 +41,19 @@ export class AuthController {
     };
   }
 
+  @Post('check')
   @Get('check')
   async check(@Req() req: Request, @Res() res: Response) {
     console.log(req.query);
+    res.status(HttpStatus.CREATED).send();
+    // const user = await this.userService.findOneByUsername('username');
 
-    const user = await this.userService.findOneByUsername('username');
+    // if (user && user.stream_key === 'key') {
+    //   //logic to update stream status
 
-    if (user && user.stream_key === 'key') {
-      //logic to update stream status
-
-      res.status(HttpStatus.CREATED).send();
-    } else {
-      res.status(HttpStatus.NOT_FOUND).send();
-    }
+    //   res.status(HttpStatus.CREATED).send();
+    // } else {
+    //   res.status(HttpStatus.NOT_FOUND).send();
+    // }
   }
 }
