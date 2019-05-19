@@ -10,6 +10,12 @@ Streaming platform for education
 $ npm install
 ```
 
+Add line into hosts file
+
+```bash
+127.0.0.1 		lerna_db
+```
+
 ## Running the app
 
 ```bash
@@ -43,7 +49,7 @@ $ npm run test:cov
 ## Environment Configuration
 
 Integrated Configuration Module so you can just inject `ConfigService`
-and read all environment variables from `.env` file.
+and read all environment variables from `production.env` or `development.env` files.
 
 ## Swagger
 

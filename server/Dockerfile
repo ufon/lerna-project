@@ -1,17 +1,16 @@
 FROM node:9
 
-RUN npm i -g typescript ts-node nodemon
-
+# Create app directory
+RUN mkdir -p /var/www/lerna-be
 WORKDIR /var/www/lerna-be
+
+# Bundle app source
 ADD . /var/www/lerna-be
 
-# TODO: create conditional COPY
-COPY ormconfig.prod.json ormconfig.json
-RUN rm -rf node_modules && npm install
+# Install dependencies
+RUN npm install
 
 EXPOSE 3000
 
-RUN if [ "$NODE_ENV" = "development" ]; \
-    then npm run start:dev;  \
-    else npm run start; \
-    fi
+RUN chmod +x docker/start.sh
+CMD ./docker/start.sh;

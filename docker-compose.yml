@@ -15,13 +15,14 @@ services:
     ports:
       - "3306:3306"
   lerna_api:
+    environment:
+      - NODE_ENV=development
     container_name: lerna_api
     build: ./server
     volumes:
       - ./server/src:/var/www/lerna-be/src
     ports:
       - "3000:3000"
-    env_file: "./server/.env"
     depends_on:
       - lerna_db
   lerna_media:
@@ -33,6 +34,7 @@ services:
       - 8443:443
     volumes:
       - ./media/certs:/opt/certs
+      - ./media/data:/opt/data
     depends_on:
       - lerna_api
       - lerna_db

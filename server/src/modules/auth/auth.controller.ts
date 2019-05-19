@@ -41,7 +41,6 @@ export class AuthController {
     };
   }
 
-  @Post('check')
   @Get('check')
   async check(@Req() req: Request, @Res() res: Response) {
     console.log(req.query);
