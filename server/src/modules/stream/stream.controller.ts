@@ -1,7 +1,9 @@
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+
 import { StreamService } from './stream.service';
 import { Stream } from './stream.entity';
 import { CreateStreamDto } from './dto/create-stream.dto';
+import { UpdateStreamDto } from './dto/update-stream.dto';
 
 @Controller('streams')
 export class StreamController {
@@ -23,5 +25,14 @@ export class StreamController {
   @Post()
   async create(@Body() createStreamDto: CreateStreamDto) {
     return this.streamService.create(createStreamDto);
+  }
+
+  @Post(':id')
+  async update(
+    @Param('id')
+    id,
+    @Body() updateStreamDto: UpdateStreamDto,
+  ) {
+    return this.streamService.update(id, updateStreamDto);
   }
 }

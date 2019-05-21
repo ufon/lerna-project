@@ -8,5 +8,7 @@ export class UpdateStreamDto {
 
   readonly description: string;
 
+  readonly active: boolean;
+
   readonly tags: Tag[];
 }

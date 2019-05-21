@@ -10,7 +10,9 @@ import {
 import { ApiResponse, ApiUseTags } from '@nestjs/swagger';
 import { AuthService, LoginUserDto, RegisterUserDto } from './';
 import { UsersService } from './../user';
+import { StreamService } from './../stream';
 import { Response, Request } from 'express';
+import { parseUrl } from 'query-string';
 
 @Controller('auth')
 @ApiUseTags('authentication')
@@ -18,6 +20,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UsersService,
+    private readonly streamService: StreamService,
   ) {}
 
   @Post('login')
@@ -41,18 +44,44 @@ export class AuthController {
     };
   }
 
-  @Get('check')
-  async check(@Req() req: Request, @Res() res: Response) {
+  @Get('start')
+  async start(@Req() req: Request, @Res() res: Response) {
+    const { name: stream_key, tcurl } = req.query;
+
+    const {
+      query: { username },
+    } = parseUrl(tcurl);
+
+    const stream = await this.streamService.findOneBySlug(username.toString());
+
+    const { user } = stream;
+
+    if (user && user.stream_key === stream_key) {
+      console.log('Translation was started!');
+      await this.streamService.update(stream.id, { ...stream, active: true });
+      res.status(HttpStatus.CREATED).send();
+    } else {
+      console.log('Validation error!');
+      res.status(HttpStatus.NOT_FOUND).send();
+    }
+  }
+
+  @Get('end')
+  async end(@Req() req: Request, @Res() res: Response) {
     console.log(req.query);
-    res.status(HttpStatus.CREATED).send();
-    // const user = await this.userService.findOneByUsername('username');
 
-    // if (user && user.stream_key === 'key') {
-    //   //logic to update stream status
+    const { name: stream_key } = req.query;
 
-    //   res.status(HttpStatus.CREATED).send();
-    // } else {
-    //   res.status(HttpStatus.NOT_FOUND).send();
-    // }
+    const stream = await this.streamService.findOneByStreamKey(stream_key);
+
+    console.log(stream);
+
+    if (stream && stream.active) {
+      console.log('Translation was ended!');
+      await this.streamService.update(stream.id, { ...stream, active: false });
+    } else {
+      console.log('Validation error!');
+      res.status(HttpStatus.NOT_FOUND).send();
+    }
   }
 }

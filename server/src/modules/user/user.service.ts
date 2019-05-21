@@ -29,7 +29,10 @@ export class UsersService {
   }
 
   async findOneByUsername(username: string): Promise<User> {
-    return this.userRepository.findOne({ username });
+    return this.userRepository.findOne({
+      where: { username },
+      relations: ['stream'],
+    });
   }
 
   async create(payload: CreateUserDto): Promise<User> {

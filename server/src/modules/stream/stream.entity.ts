@@ -25,8 +25,11 @@ export class Stream {
   @Column()
   slug: string;
 
-  @Column()
+  @Column({ default: false })
   active: boolean;
+
+  @Column({ default: false })
+  public: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created: Date;
@@ -43,7 +46,7 @@ export class Stream {
   @JoinTable()
   tags: Tag[];
 
-  @OneToOne(type => User)
+  @OneToOne(type => User, user => user.stream)
   @JoinColumn()
   user: User;
 }

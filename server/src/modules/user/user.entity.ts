@@ -1,6 +1,13 @@
 import { Exclude } from 'class-transformer';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { PasswordTransformer } from './password.transformer';
+import { Stream } from '../stream/stream.entity';
 
 @Entity({
   name: 'users',
@@ -25,4 +32,8 @@ export class User {
   })
   @Exclude()
   password: string;
+
+  @OneToOne(type => Stream, stream => stream.user)
+  @JoinColumn()
+  stream: Stream;
 }

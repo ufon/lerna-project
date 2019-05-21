@@ -23,6 +23,19 @@ export class StreamService {
     return await this.streamRepository.find();
   }
 
+  async findOneBySlug(slug: string): Promise<Stream> {
+    return this.streamRepository.findOne({
+      where: { slug },
+      relations: ['user'],
+    });
+  }
+
+  async findOneByStreamKey(userStreamKey: string): Promise<Stream> {
+    return this.streamRepository.findOne({
+      where: { userStreamKey },
+    });
+  }
+
   async create(payload: CreateStreamDto): Promise<Stream> {
     const stream = await this.streamRepository.findOne({ user: payload.user });
 
