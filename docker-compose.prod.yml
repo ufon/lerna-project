@@ -14,13 +14,20 @@ services:
       - MYSQL_USER=${TYPEORM_USERNAME}
     ports:
       - "3306:3306"
+  lerna_client:
+    environment:
+      - NODE_ENV=production
+    container_name: lerna_client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:80"
   lerna_api:
     environment:
       - NODE_ENV=production
     container_name: lerna_api
     build: ./server
-    volumes:
-      - ./server/src:/var/www/lerna-be/src
     ports:
       - "3000:3000"
     depends_on:

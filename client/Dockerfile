@@ -1,0 +1,15 @@
+FROM node:9
+
+# Create app directory
+RUN mkdir -p /var/www/lerna-fe
+WORKDIR /var/www/lerna-fe
+
+# Bundle app source
+ADD . /var/www/lerna-fe
+
+# Install dependencies
+RUN npm install --quiet
+
+CMD ["npm", "start"]
+
+EXPOSE 3001
