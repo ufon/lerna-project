@@ -1,15 +1,63 @@
-# Use the latest 2.1 version of CircleCI pipeline processing engine, see https://circleci.com/docs/2.0/configuration-reference/
 version: 2.1
+jobs:
+  build-be:
+    working_directory: ~/lerna-project/server
+    # The primary container is an instance of the first image listed. The job's commands run in this container.
+    docker:
+      - image: circleci/node:8-stretch
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-npm
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Unit Tests
+          command: npm run test:coverage
+      - run:
+          name: Code Linting
+          command: npm run lint
+      - run:
+          name: Dist Build
+          command: npm run build:dist
+  build-fe:
+    working_directory: ~/lerna-project/client
+    docker:
+      - image: circleci/node:8-stretch
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-npm
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      # - run:
+      #     name: Unit Tests
+      #     command: npm run test:coverage
+      # - run:
+      #     name: Code Linting
+      #     command: npm run lint
+      - run:
+          name: Dist Build
+          command: npm run build
 
-# Use a package of configuration called an orb, see https://circleci.com/docs/2.0/orb-intro/
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.3.1
-
-# Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
 workflows:
-  # Name the workflow "Welcome"
-  Welcome:
-    # Run the welcome/run job in its own container
+  version: 2
+  build_and_test:
     jobs:
-      - welcome/run
+      - build-be
+      - build-fe:
+          requires:
+            - build-be
+          filters:
+            branches:
+              only: master
