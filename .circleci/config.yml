@@ -16,15 +16,15 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run:
-          name: Unit Tests
-          command: npm run test:coverage
-      - run:
-          name: Code Linting
-          command: npm run lint
-      - run:
-          name: Dist Build
-          command: npm run build:dist
+      # - run:
+      #     name: Unit Tests
+      #     command: npm run test:cov
+      # - run:
+      #     name: Code Linting
+      #     command: npm run lint
+      # - run:
+      #     name: Dist Build
+      #     command: npm run build:dist
   build-fe:
     working_directory: ~/lerna-project/client
     docker:
