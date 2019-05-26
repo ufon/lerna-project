@@ -6,7 +6,7 @@ jobs:
     docker:
       - image: circleci/node:8-stretch
     steps:
-      - checkout 
+      - checkout:
           path: ~/lerna-project
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
@@ -31,7 +31,7 @@ jobs:
     docker:
       - image: circleci/node:8-stretch
     steps:
-      - checkout
+      - checkout:
           path: ~/lerna-project
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
@@ -54,7 +54,7 @@ jobs:
 
 workflows:
   version: 2
-  build_and_test:
+  build_fe_and_be:
     jobs:
       - build-be
       - build-fe:
