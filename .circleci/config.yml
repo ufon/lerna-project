@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
-            ssh $DROPLET_USER@$DROPLET_IP "cd ~/lerna-project && ./scripts/deployer.sh"     
+            ssh $DROPLET_USER@$DROPLET_IP "cd ~/lerna-project/scripts && chmod +x ./deployer.sh && ./deployer.sh"     
 
 workflows:
   version: 2
