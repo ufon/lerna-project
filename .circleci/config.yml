@@ -63,3 +63,10 @@ workflows:
           filters:
             branches:
               only: master
+      - deployment:
+          requires:
+            - build-be
+            - build-fe
+          commands:
+            - echo 'deploying master branch'
+            - ssh -v $DROPLET_USER@$DROPLET_IP "cd ~/lerna-project; ./scripts/deployer.sh"
