@@ -51,10 +51,14 @@ jobs:
       - run:
           name: Dist Build
           command: npm run build
-      - deployment:
-          commands:
-            - echo 'deploying master branch'
-            - ssh -v $DROPLET_USER@$DROPLET_IP "cd ~/lerna-project; ./scripts/deployer.sh"
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Deploy Over SSH
+          command: |
+            ssh $DROPLET_USER@$DROPLET_IP "cd ~/lerna-project; ./scripts/deployer.sh"     
 
 workflows:
   version: 2
@@ -64,6 +68,10 @@ workflows:
       - build-fe:
           requires:
             - build-be
+      - deploy:
+          requires:
+            - build-be
+            - build-fe
           filters:
             branches:
               only: master
