@@ -20,9 +20,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - REACT_APP_API_URL=http://localhost:3000
     container_name: lerna_client
-    build:
-      context: ./client
-      dockerfile: Dockerfile
+    build: ./client
     volumes:
       - ./client/src:/var/www/lerna-fe/src
       - ./client/node_modules

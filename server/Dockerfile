@@ -8,9 +8,9 @@ WORKDIR /var/www/lerna-be
 ADD . /var/www/lerna-be
 
 # Install dependencies
-RUN npm install
+RUN npm install --quiet
 
 EXPOSE 3000
 
-RUN chmod +x docker/start.sh
+RUN chmod +x ./docker/start.sh
 CMD ./docker/start.sh;

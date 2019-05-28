@@ -10,6 +10,6 @@ ADD . /var/www/lerna-fe
 # Install dependencies
 RUN npm install --quiet
 
-CMD ["npm", "start"]
-
 EXPOSE 3001
+
+CMD ["npm", "start"]
