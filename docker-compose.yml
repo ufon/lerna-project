@@ -18,6 +18,7 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_API_URL=http://localhost:3000
     container_name: lerna_client
     build:
       context: ./client
@@ -51,7 +52,9 @@ services:
     depends_on:
       - lerna_api
       - lerna_db
+      - lerna_client
     links:
       - lerna_api
+      - lerna_client
 volumes:
   lerna_db_data:

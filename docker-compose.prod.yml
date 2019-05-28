@@ -17,6 +17,7 @@ services:
   lerna_client:
     environment:
       - NODE_ENV=production
+      - REACT_APP_API_URL=http://localhost/api
     container_name: lerna_client
     build:
       context: ./client
