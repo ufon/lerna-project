@@ -17,7 +17,7 @@ services:
   lerna_client:
     environment:
       - NODE_ENV=production
-      - REACT_APP_API_URL=http://localhost/api
+      - REACT_APP_API_URL=http://lerna.space/api
     container_name: lerna_client
     build:
       context: ./client
@@ -33,15 +33,15 @@ services:
       - "3000"
     depends_on:
       - lerna_db
-  lerna_media:
-    container_name: lerna_media
+  ngnix:
     build: ./media
     ports:
       - "1935:1935"
       - "80:80"
       - "443:443"
     volumes:
-      - ./media/certs:/opt/certs
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
       - build_volume:/var/www/lerna-fe/build
     depends_on:
       - lerna_api
@@ -50,6 +50,11 @@ services:
     links:
       - lerna_api
       - lerna_client
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
 volumes:
   lerna_db_data:
   build_volume:
