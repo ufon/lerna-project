@@ -9,7 +9,7 @@ class Home extends Component {
   }
 
   render() {
-    return <div>Home page</div>;
+    return <div>Home page test pipeline workflow</div>;
   }
 }
 
