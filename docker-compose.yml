@@ -34,7 +34,9 @@ services:
     depends_on:
       - lerna_db
   ngnix:
-    build: ./media
+    build:
+      context: ./media
+      dockerfile: Dockerfile.prod
     ports:
       - "1935:1935"
       - "80:80"
@@ -55,6 +57,16 @@ services:
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - lerna_db:db
+    ports:
+      - 8765:80
+    environment:
+      - MYSQL_ROOT_PASSWORD=${TYPEORM_PASSWORD}
+    depends_on:
+      - lerna_db
 volumes:
   lerna_db_data:
   build_volume:

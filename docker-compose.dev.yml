@@ -54,5 +54,15 @@ services:
     links:
       - lerna_api
       - lerna_client
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - lerna_db:db
+    ports:
+      - 8765:80
+    environment:
+      - MYSQL_ROOT_PASSWORD=${TYPEORM_PASSWORD}
+    depends_on:
+      - lerna_db
 volumes:
   lerna_db_data:
