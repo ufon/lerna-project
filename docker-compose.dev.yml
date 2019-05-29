@@ -13,36 +13,40 @@ services:
       - MYSQL_ROOT_PASSWORD=${TYPEORM_PASSWORD}
       - MYSQL_USER=${TYPEORM_USERNAME}
     ports:
-      - "3306"
+      - "3306:3306"
   lerna_client:
     environment:
-      - NODE_ENV=production
-      - REACT_APP_API_URL=http://lerna.space/api
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_API_URL=http://localhost:3000
     container_name: lerna_client
-    build:
-      context: ./client
-      dockerfile: Dockerfile.prod
+    build: ./client
     volumes:
-      - build_volume:/var/www/lerna-fe/build
+      - ./client/src:/var/www/lerna-fe/src
+      - ./client/node_modules
+    ports:
+      - "3001:3001"
   lerna_api:
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
     container_name: lerna_api
     build: ./server
+    volumes:
+      - ./server/src:/var/www/lerna-be/src
     ports:
-      - "3000"
+      - "3000:3000"
     depends_on:
       - lerna_db
-  ngnix:
+  lerna_media:
+    container_name: lerna_media
     build: ./media
     ports:
-      - "1935:1935"
-      - "80:80"
-      - "443:443"
+      - 1935:1935
+      - 8080:80
+      - 8443:443
     volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-      - build_volume:/var/www/lerna-fe/build
+      - ./media/certs:/opt/certs
+      - ./media/data:/opt/data
     depends_on:
       - lerna_api
       - lerna_db
@@ -50,11 +54,5 @@ services:
     links:
       - lerna_api
       - lerna_client
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
 volumes:
   lerna_db_data:
-  build_volume:
