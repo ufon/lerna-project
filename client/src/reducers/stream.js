@@ -15,12 +15,12 @@ const getStreamsRequest = state => ({
   success: undefined,
   errorMessage: ""
 });
-const getStreamsSuccess = (state, { payload: { data } }) => ({
+const getStreamsSuccess = (state, { payload }) => ({
   ...state,
   loading: false,
   success: true,
   errorMessage: "",
-  data: [...data]
+  data: payload
 });
 
 const streamReducer = handleActions(

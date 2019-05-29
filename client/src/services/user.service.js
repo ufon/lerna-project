@@ -15,6 +15,8 @@ export class UserService {
   }
 
   getProfile = () => this.api.get("/profile");
+  login = data => this.api.post("/auth/login", data);
+  register = data => this.api.post("/auth/register", data);
 }
 
 export default new UserService(axios);

@@ -32,7 +32,8 @@ export class StreamService {
 
   async findOneByStreamKey(userStreamKey: string): Promise<Stream> {
     return this.streamRepository.findOne({
-      where: { userStreamKey },
+      relations: ['user'],
+      where: { user: { stream_key: userStreamKey } },
     });
   }
 
@@ -53,7 +54,7 @@ export class StreamService {
   async update(id: number, payload: UpdateStreamDto): Promise<Stream> {
     const stream = await this.findOneById(id);
 
-    let updatedStream = Object.assign(stream, payload);
+    const updatedStream = Object.assign(stream, payload);
     return await this.streamRepository.save(updatedStream);
   }
 }

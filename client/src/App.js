@@ -9,7 +9,7 @@ import PrivateRoute from "./helpers/withAuth";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Register from "./pages/Register";
 
 import StreamList from "./pages/StreamList";
 import StreamPage from "./pages/StreamPage";
@@ -29,7 +29,7 @@ export default class App extends Component {
           <Route path="/streams/:tag" component={StreamList} />
           <Route path="/stream/:username" component={StreamPage} />
           <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
+          <Route path="/register" component={Register} />
         </ConnectedRouter>
       </Provider>
     );

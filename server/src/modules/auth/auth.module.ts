@@ -7,11 +7,13 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
 
+const passportModule = PassportModule.register({ defaultStrategy: 'jwt' });
+
 @Module({
   imports: [
     UserModule,
     ConfigModule,
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    passportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
@@ -27,6 +29,6 @@ import { AuthController } from './auth.controller';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
-  exports: [PassportModule.register({ defaultStrategy: 'jwt' })],
+  exports: [passportModule],
 })
 export class AuthModule {}

@@ -25,7 +25,11 @@ export class UsersService {
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    return this.userRepository.findOne({ email });
+    return this.userRepository
+      .createQueryBuilder('users')
+      .where('users.email = :email', { email })
+      .addSelect('users.password')
+      .getOne();
   }
 
   async findOneByUsername(username: string): Promise<User> {
@@ -52,10 +56,15 @@ export class UsersService {
       this.userRepository.create(payload),
     );
 
-    await this.streamService.create({
+    const newStream = await this.streamService.create({
       title: 'My first stream',
       slug: payload.username,
       user: newUser,
+    });
+
+    await this.userRepository.update(newUser.id, {
+      ...newUser,
+      stream: newStream,
     });
 
     return newUser;

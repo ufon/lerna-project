@@ -1,15 +1,13 @@
 import React from "react";
-
+import { connect } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 
-import tokenHelpers from "./tokenHelpers";
-
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ component: Component, auth, ...rest }) => {
   return (
     <Route
       {...rest}
       render={props =>
-        !!tokenHelpers.read() ? (
+        auth ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -24,4 +22,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   );
 };
 
-export default PrivateRoute;
+const mapStateToProps = ({ app }) => ({
+  auth: app.authReducer.isAuthenticated
+});
+
+export default connect(mapStateToProps)(PrivateRoute);

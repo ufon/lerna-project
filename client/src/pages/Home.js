@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
 import { getStreams } from "../actions/stream";
@@ -9,7 +9,16 @@ class Home extends Component {
   }
 
   render() {
-    return <div>Home page test pipeline workflow</div>;
+    return (
+      <Fragment>
+        <h1>Current streams:</h1>
+        <ul>
+          {this.props.streams.map(item => (
+            <li>{item.title}</li>
+          ))}
+        </ul>
+      </Fragment>
+    );
   }
 }
 

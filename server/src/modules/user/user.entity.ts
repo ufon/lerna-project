@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   JoinColumn,
+  Generated,
 } from 'typeorm';
 import { PasswordTransformer } from './password.transformer';
 import { Stream } from '../stream/stream.entity';
@@ -22,13 +23,15 @@ export class User {
   @Column({ length: 255 })
   email: string;
 
-  @PrimaryGeneratedColumn('uuid')
+  @Column()
+  @Generated('uuid')
   stream_key: string;
 
   @Column({
     name: 'password',
     length: 255,
     transformer: new PasswordTransformer(),
+    select: false,
   })
   @Exclude()
   password: string;

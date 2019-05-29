@@ -4,11 +4,10 @@ import StreamService from "../services/stream.service";
 
 export function* getStreamsRequest() {
   try {
-    const response = yield call(StreamService.getStreams);
-    yield call(console.log, response);
+    const { data } = yield call(StreamService.getStreams);
     yield put({
       type: getStreams.SUCCESS,
-      payload: response
+      payload: data
     });
   } catch (error) {
     yield put({
