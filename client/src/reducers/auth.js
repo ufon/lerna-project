@@ -52,6 +52,15 @@ const loginSuccess = (state, { payload }) => ({
     errorMessage: ""
   }
 });
+const loginFailure = (state, { payload }) => ({
+  ...state,
+  login: {
+    ...state.login,
+    loading: false,
+    success: false,
+    errorMessage: payload
+  }
+});
 
 const registerRequest = state => ({
   ...state,
@@ -69,6 +78,15 @@ const registerSuccess = state => ({
     loading: false,
     success: true,
     errorMessage: ""
+  }
+});
+const registerFailure = (state, { payload }) => ({
+  ...state,
+  register: {
+    ...state.register,
+    loading: false,
+    success: false,
+    errorMessage: payload
   }
 });
 
@@ -94,8 +112,10 @@ const authReducer = handleActions(
   {
     [login.REQUEST]: loginRequest,
     [login.SUCCESS]: loginSuccess,
+    [login.FAILURE]: loginFailure,
     [register.REQUEST]: registerRequest,
     [register.SUCCESS]: registerSuccess,
+    [register.FAILURE]: registerFailure,
     [getProfile.REQUEST]: profileRequest,
     [getProfile.SUCCESS]: profileSuccess
   },

@@ -13,10 +13,11 @@ export function* loginRequest(data) {
       type: login.SUCCESS,
       payload: accessToken
     });
+    yield profileRequest();
   } catch (error) {
     yield put({
       type: login.FAILURE,
-      payload: error
+      payload: error.response.data
     });
   }
 }
@@ -30,7 +31,7 @@ export function* registerRequest(data) {
   } catch (error) {
     yield put({
       type: register.FAILURE,
-      payload: error
+      payload: error.response.data
     });
   }
 }
