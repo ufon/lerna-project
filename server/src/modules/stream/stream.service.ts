@@ -1,6 +1,6 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, createQueryBuilder } from 'typeorm';
 
 import { CreateStreamDto } from './dto/create-stream.dto';
 
@@ -31,10 +31,17 @@ export class StreamService {
   }
 
   async findOneByStreamKey(userStreamKey: string): Promise<Stream> {
-    return this.streamRepository.findOne({
-      relations: ['user'],
-      where: { user: { stream_key: userStreamKey } },
-    });
+    const stream = await this.streamRepository
+      .createQueryBuilder('stream')
+      .leftJoinAndSelect(
+        'stream.user',
+        'user',
+        'user.stream_key = :userStreamKey',
+        { userStreamKey },
+      )
+      .getOne();
+
+    return stream;
   }
 
   async create(payload: CreateStreamDto): Promise<Stream> {

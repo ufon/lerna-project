@@ -46,10 +46,10 @@ export class AuthController {
 
   @Get('start')
   async start(@Req() req: Request, @Res() res: Response) {
-    const { name: stream_key, tcurl } = req.query;
+    const { name: username, tcurl } = req.query;
 
     const {
-      query: { username },
+      query: { stream_key },
     } = parseUrl(tcurl);
 
     const stream = await this.streamService.findOneBySlug(username.toString());
@@ -71,10 +71,12 @@ export class AuthController {
     const { tcurl } = req.query;
 
     const {
-      query: { username },
+      query: { stream_key },
     } = parseUrl(tcurl);
 
-    const stream = await this.streamService.findOneBySlug(username.toString());
+    const stream = await this.streamService.findOneByStreamKey(
+      stream_key.toString(),
+    );
 
     if (stream && stream.active) {
       console.log('Translation was ended!');
