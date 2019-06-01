@@ -33,7 +33,7 @@ services:
       - "3000"
     depends_on:
       - lerna_db
-  ngnix:
+  nginx:
     build:
       context: ./media
       dockerfile: Dockerfile.prod
