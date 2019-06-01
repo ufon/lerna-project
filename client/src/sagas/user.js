@@ -8,6 +8,7 @@ export function* loginRequest(data) {
     const {
       data: { accessToken }
     } = yield call(UserService.login, { ...data.payload });
+    yield call(tokenHelpers.delete);
     yield call(tokenHelpers.write, accessToken);
     yield put({
       type: login.SUCCESS,

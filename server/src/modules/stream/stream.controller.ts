@@ -15,11 +15,19 @@ export class StreamController {
   }
 
   @Get(':id')
-  findOne(
+  findOneByID(
     @Param('id')
     id,
   ): Promise<Stream> {
     return this.streamService.findOneById(id);
+  }
+
+  @Get('/slug/:slug')
+  findOneBySlug(
+    @Param('slug')
+    slug,
+  ): Promise<Stream> {
+    return this.streamService.findOneBySlug(slug.toString());
   }
 
   @Post()

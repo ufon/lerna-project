@@ -1,32 +1,68 @@
 import { handleActions } from "redux-actions";
 
-import { getStreams } from "../actions/stream";
+import { getStreams, getStreamBySlug } from "../actions/stream";
 
 export const initialState = {
-  loading: true,
-  success: undefined,
-  errorMessage: "",
-  data: []
+  streamList: {
+    loading: true,
+    success: undefined,
+    errorMessage: "",
+    data: []
+  },
+  currentStream: {
+    loading: true,
+    success: undefined,
+    errorMessage: "",
+    data: {}
+  }
 };
 
 const getStreamsRequest = state => ({
   ...state,
-  loading: true,
-  success: undefined,
-  errorMessage: ""
+  streamList: {
+    ...state.streamList,
+    loading: true,
+    success: undefined,
+    errorMessage: ""
+  }
 });
 const getStreamsSuccess = (state, { payload }) => ({
   ...state,
-  loading: false,
-  success: true,
-  errorMessage: "",
-  data: payload
+  streamList: {
+    ...state.streamList,
+    loading: false,
+    success: true,
+    errorMessage: "",
+    data: payload
+  }
+});
+
+const getStreamRequest = state => ({
+  ...state,
+  currentStream: {
+    ...state.currentStream,
+    loading: true,
+    success: undefined,
+    errorMessage: ""
+  }
+});
+const getStreamSuccess = (state, { payload }) => ({
+  ...state,
+  currentStream: {
+    ...state.currentStream,
+    loading: false,
+    success: true,
+    errorMessage: "",
+    data: payload
+  }
 });
 
 const streamReducer = handleActions(
   {
     [getStreams.REQUEST]: getStreamsRequest,
-    [getStreams.SUCCESS]: getStreamsSuccess
+    [getStreams.SUCCESS]: getStreamsSuccess,
+    [getStreamBySlug.REQUEST]: getStreamRequest,
+    [getStreamBySlug.SUCCESS]: getStreamSuccess
   },
   initialState
 );

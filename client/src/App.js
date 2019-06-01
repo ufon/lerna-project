@@ -9,9 +9,9 @@ import PrivateRoute from "./helpers/withAuth";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Logout from "./pages/Logout";
 import Register from "./pages/Register";
 
-import StreamList from "./pages/StreamList";
 import StreamPage from "./pages/StreamPage";
 
 import Profile from "./pages/Profile";
@@ -30,10 +30,9 @@ export default class App extends Component {
             <PrivateRoute path="/profile/edit" component={Profile} />
             <Route path="/profile/:username" component={Home} />
             <Route exact path="/" component={Home} />
-            <Route path="/streams" component={StreamList} />
-            <Route path="/streams/:tag" component={StreamList} />
-            <Route path="/stream/:username" component={StreamPage} />
+            <Route path="/stream/:slug" component={StreamPage} />
             <Route path="/login" component={Login} />
+            <Route path="/logout" component={Logout} />
             <Route path="/register" component={Register} />
           </MainLayout>
         </ConnectedRouter>

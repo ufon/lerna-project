@@ -1,8 +1,9 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
-import { Menu } from "antd";
+import { connect } from "react-redux";
+import { Popover, Menu, Button, Icon } from "antd";
 
-const MainMenu = ({ location }) => (
+const MainMenu = ({ location, profile }) => (
   <Menu
     theme="dark"
     mode="horizontal"
@@ -15,7 +16,38 @@ const MainMenu = ({ location }) => (
     <Menu.Item key="/about">
       <Link to="/about">About</Link>
     </Menu.Item>
+
+    <Menu.Item style={{ marginLeft: "auto" }}>
+      {!profile.username ? (
+        <Link to="/login">
+          <Button size="large">
+            <Icon type="login" />
+            Login
+          </Button>
+        </Link>
+      ) : (
+        <Popover
+          content={
+            <Link to="/logout">
+              <Button size="large">
+                <Icon type="logout" />
+                Logout
+              </Button>
+            </Link>
+          }
+          trigger="click"
+        >
+          Hello!, {profile.username}
+        </Popover>
+      )}
+    </Menu.Item>
   </Menu>
 );
 
-export default withRouter(MainMenu);
+const ConnetedMenu = withRouter(MainMenu);
+
+const mapStateToProps = state => ({
+  profile: state.app.authReducer.user.data
+});
+
+export default connect(mapStateToProps)(ConnetedMenu);

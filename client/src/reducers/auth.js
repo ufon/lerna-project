@@ -1,6 +1,6 @@
 import { handleActions } from "redux-actions";
 
-import { login, register, getProfile } from "../actions/auth";
+import { login, register, getProfile, logout } from "../actions/auth";
 
 import tokenHelpers from "../helpers/tokenHelpers";
 
@@ -62,6 +62,14 @@ const loginFailure = (state, { payload }) => ({
   }
 });
 
+const logoutRequest = state => ({
+  ...state,
+  accessToken: null,
+  isAuthenticated: false,
+  login: initialState.login,
+  user: initialState.user
+});
+
 const registerRequest = state => ({
   ...state,
   register: {
@@ -117,7 +125,8 @@ const authReducer = handleActions(
     [register.SUCCESS]: registerSuccess,
     [register.FAILURE]: registerFailure,
     [getProfile.REQUEST]: profileRequest,
-    [getProfile.SUCCESS]: profileSuccess
+    [getProfile.SUCCESS]: profileSuccess,
+    [logout]: logoutRequest
   },
   initialState
 );

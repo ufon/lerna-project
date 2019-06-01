@@ -9,6 +9,7 @@ export class StreamService {
   }
 
   getStreams = () => this.api.get("/streams");
+  getStream = slug => this.api.get(`/streams/slug/${slug}`);
 }
 
 export default new StreamService(axios);
