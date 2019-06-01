@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { Card, Row, Col, Button } from "antd";
+import { Row } from "antd";
 import { getStreamBySlug } from "../actions/stream";
 import shaka from "../../node_modules/shaka-player/dist/shaka-player.ui.js";
 import "../../node_modules/shaka-player/dist/controls.css";
@@ -40,7 +40,7 @@ class StreamPage extends Component {
   }
 
   render() {
-    const { active, title, description, slug } = this.props.stream;
+    const { active, title, description } = this.props.stream;
 
     return (
       <Fragment>

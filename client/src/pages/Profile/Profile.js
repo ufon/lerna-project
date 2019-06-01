@@ -4,21 +4,31 @@ import { connect } from "react-redux";
 
 import { getProfile } from "../../actions/auth";
 
-import { Form, Icon, Input, Button, Layout, Alert } from "antd";
+import { Form, Input, Button, Layout, Alert } from "antd";
 
 class Profile extends Component {
   componentDidMount() {
     this.props.getProfile();
   }
 
+  onHandleProfile = event => {
+    event.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        const { firstname, lastname } = values;
+        this.props.updateProfile({ firstname, lastname });
+      }
+    });
+  };
+
   render() {
     const {
-      isSuccess,
+      // isSuccess,
       errorMessage,
       profile,
       form: { getFieldDecorator }
     } = this.props;
-    const { username, stream_key } = profile;
+    // const { username, stream_key } = profile;
 
     return (
       <Layout.Content
@@ -29,7 +39,7 @@ class Profile extends Component {
           alignItems: "center"
         }}
       >
-        <Form onSubmit={this.onHandleRegister} className="login-form">
+        <Form onSubmit={this.onHandleProfile} className="profile-form">
           {errorMessage && (
             <Alert
               style={{
@@ -39,81 +49,72 @@ class Profile extends Component {
               type="error"
             />
           )}
-          <Form.Item>
-            {getFieldDecorator("email", {
-              rules: [{ required: true, message: "Please input your email!" }]
-            })(
-              <Input
-                prefix={
-                  <Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />
-                }
-                type="email"
-                placeholder="Email"
-              />
-            )}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator("username", {
-              rules: [
-                { required: true, message: "Please input your username!" }
-              ]
-            })(
-              <Input
-                prefix={
-                  <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
-                }
-                placeholder="Username"
-              />
-            )}
-          </Form.Item>
           <Form.Item style={{ marginBottom: 0 }}>
             <Form.Item style={{ display: "inline-block", width: "50%" }}>
               {getFieldDecorator("firstname", {
                 rules: [
                   { required: true, message: "Please input your firstname!" }
                 ]
-              })(<Input placeholder="First Name" />)}
+              })(<Input value={profile.firstname} placeholder="First Name" />)}
             </Form.Item>
             <Form.Item style={{ display: "inline-block", width: "50%" }}>
               {getFieldDecorator("lastname", {
                 rules: [
                   { required: true, message: "Please input your lastname!" }
                 ]
-              })(<Input placeholder="Last Name" />)}
+              })(<Input value={profile.lastname} placeholder="Last Name" />)}
             </Form.Item>
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator("password", {
-              rules: [
-                { required: true, message: "Please input your password!" },
-                {
-                  validator: this.validateToNextPassword
-                }
-              ]
-            })(<Input.Password placeholder="Password" />)}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator("confirm", {
-              rules: [
-                { required: true, message: "Please confirm your Password!" },
-                {
-                  validator: this.compareToFirstPassword
-                }
-              ]
-            })(
-              <Input.Password
-                placeholder="Confirm password"
-                onBlur={this.handleConfirmBlur}
-              />
-            )}
           </Form.Item>
           <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
-              className="register-form-button"
+              className="profile-form-button"
             >
               Update profile
+            </Button>
+          </Form.Item>
+        </Form>
+
+        <Form onSubmit={this.onHandleRegister} className="stream-form">
+          {errorMessage && (
+            <Alert
+              style={{
+                marginBottom: "24px"
+              }}
+              message={errorMessage.error}
+              type="error"
+            />
+          )}
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Form.Item style={{ display: "inline-block", width: "50%" }}>
+              {getFieldDecorator("firstname", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Please input your title of your stream!"
+                  }
+                ]
+              })(<Input placeholder="Stream title" />)}
+            </Form.Item>
+            <Form.Item style={{ display: "inline-block", width: "50%" }}>
+              {getFieldDecorator("lastname", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Please input description of your stream!"
+                  }
+                ]
+              })(<Input placeholder="Stream description" />)}
+            </Form.Item>
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="stream-form-button"
+            >
+              Update stream
             </Button>
           </Form.Item>
         </Form>
