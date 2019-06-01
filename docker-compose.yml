@@ -42,6 +42,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
+      - ./media/data:/opt/data
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
       - build_volume:/var/www/lerna-fe/build
