@@ -42,15 +42,14 @@ services:
     build: ./media
     ports:
       - 1935:1935
-      - 8080:80
+      - 80:80
       - 8443:443
     volumes:
       - ./media/certs:/opt/certs
-      - ./media/data:/opt/data
+      - ./media/data/rec:/opt/data/rec
     depends_on:
       - lerna_api
       - lerna_db
-      - lerna_client
     links:
       - lerna_api
       - lerna_client
