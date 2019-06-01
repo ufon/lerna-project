@@ -46,7 +46,7 @@ services:
       - 8443:443
     volumes:
       - ./media/certs:/opt/certs
-      - ./media/data/rec:/opt/data/rec
+      - ./media/data/rec:/var/rec
     depends_on:
       - lerna_api
       - lerna_db
