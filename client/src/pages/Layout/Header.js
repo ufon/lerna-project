@@ -27,14 +27,20 @@ const MainMenu = ({ location, profile }) => (
         </Link>
       ) : (
         <Popover
-          content={
+          content={[
             <Link to="/logout">
               <Button size="large">
                 <Icon type="logout" />
                 Logout
               </Button>
-            </Link>
-          }
+            </Link>,
+            <Link to="/profile">
+              <Button size="large">
+                <Icon type="user" />
+                Profile
+              </Button>
+            </Link>,
+          ]}
           trigger="click"
         >
           Hello!, {profile.username}
@@ -47,7 +53,7 @@ const MainMenu = ({ location, profile }) => (
 const ConnetedMenu = withRouter(MainMenu);
 
 const mapStateToProps = state => ({
-  profile: state.app.authReducer.user.data
+  profile: state.app.authReducer.user.data,
 });
 
 export default connect(mapStateToProps)(ConnetedMenu);

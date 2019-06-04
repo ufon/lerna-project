@@ -21,6 +21,12 @@ export class User {
   username: string;
 
   @Column({ length: 255 })
+  firstname: string;
+
+  @Column({ length: 255 })
+  lastname: string;
+
+  @Column({ length: 255 })
   email: string;
 
   @Column()

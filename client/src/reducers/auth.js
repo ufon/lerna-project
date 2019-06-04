@@ -1,6 +1,6 @@
 import { handleActions } from "redux-actions";
 
-import { login, register, getProfile, logout } from "../actions/auth";
+import { login, register, getProfile, logout, updateProfile } from "../actions/auth";
 
 import tokenHelpers from "../helpers/tokenHelpers";
 
@@ -16,20 +16,20 @@ export const initialState = {
     success: undefined,
     hasErrors: false,
     data: {},
-    errorInfo: ""
+    errorInfo: "",
   },
   login: {
     loading: true,
     success: undefined,
     hasErrors: false,
-    errorInfo: ""
+    errorInfo: "",
   },
   register: {
     loading: true,
     success: false,
     hasErrors: false,
-    errorInfo: ""
-  }
+    errorInfo: "",
+  },
 };
 
 const loginRequest = state => ({
@@ -38,8 +38,8 @@ const loginRequest = state => ({
     ...state.login,
     loading: true,
     success: undefined,
-    errorMessage: ""
-  }
+    errorMessage: "",
+  },
 });
 const loginSuccess = (state, { payload }) => ({
   ...state,
@@ -49,8 +49,8 @@ const loginSuccess = (state, { payload }) => ({
     ...state.login,
     loading: false,
     success: true,
-    errorMessage: ""
-  }
+    errorMessage: "",
+  },
 });
 const loginFailure = (state, { payload }) => ({
   ...state,
@@ -58,8 +58,8 @@ const loginFailure = (state, { payload }) => ({
     ...state.login,
     loading: false,
     success: false,
-    errorMessage: payload
-  }
+    errorMessage: payload,
+  },
 });
 
 const logoutRequest = state => ({
@@ -67,7 +67,7 @@ const logoutRequest = state => ({
   accessToken: null,
   isAuthenticated: false,
   login: initialState.login,
-  user: initialState.user
+  user: initialState.user,
 });
 
 const registerRequest = state => ({
@@ -76,8 +76,8 @@ const registerRequest = state => ({
     ...state.register,
     loading: true,
     success: undefined,
-    errorMessage: ""
-  }
+    errorMessage: "",
+  },
 });
 const registerSuccess = state => ({
   ...state,
@@ -85,8 +85,8 @@ const registerSuccess = state => ({
     ...state.register,
     loading: false,
     success: true,
-    errorMessage: ""
-  }
+    errorMessage: "",
+  },
 });
 const registerFailure = (state, { payload }) => ({
   ...state,
@@ -94,8 +94,8 @@ const registerFailure = (state, { payload }) => ({
     ...state.register,
     loading: false,
     success: false,
-    errorMessage: payload
-  }
+    errorMessage: payload,
+  },
 });
 
 const profileRequest = state => ({
@@ -103,8 +103,8 @@ const profileRequest = state => ({
   user: {
     ...state.user,
     loading: true,
-    success: undefined
-  }
+    success: undefined,
+  },
 });
 const profileSuccess = (state, { payload }) => ({
   ...state,
@@ -112,8 +112,25 @@ const profileSuccess = (state, { payload }) => ({
     ...state.user,
     loading: false,
     success: true,
-    data: payload
-  }
+    data: payload,
+  },
+});
+
+const updateProfileRequest = (state, { payload }) => ({
+  ...state,
+  user: {
+    ...state.user,
+    loading: true,
+    success: undefined,
+  },
+});
+const updateProfileSuccess = (state, { payload }) => ({
+  ...state,
+  user: {
+    ...state.user,
+    loading: false,
+    success: true,
+  },
 });
 
 const authReducer = handleActions(
@@ -126,9 +143,11 @@ const authReducer = handleActions(
     [register.FAILURE]: registerFailure,
     [getProfile.REQUEST]: profileRequest,
     [getProfile.SUCCESS]: profileSuccess,
-    [logout]: logoutRequest
+    [updateProfile.REQUEST]: updateProfileRequest,
+    [updateProfile.SUCCESS]: updateProfileSuccess,
+    [logout]: logoutRequest,
   },
-  initialState
+  initialState,
 );
 
 export default authReducer;

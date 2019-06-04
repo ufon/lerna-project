@@ -5,6 +5,7 @@ export const SIGNUP = "SIGNUP";
 export const LOGOUT = "LOGOUT";
 
 export const PROFILE = "PROFILE";
+export const UPDATE_PROFILE = "UPDATE_PROFILE";
 
 export const GET_STREAMS = "GET_STREAMS";
 export const GET_STREAM = "GET_STREAM";

@@ -10,11 +10,12 @@ export class UserService {
     this.api = axios.create({
       baseURL: process.env.REACT_APP_API_URL,
       timeout: 5000,
-      headers: getRequestHeaders(accessToken)
+      headers: getRequestHeaders(accessToken),
     });
   }
 
   getProfile = () => this.api.get("/profile");
+  updateProfile = data => this.api.post("/profile", data);
   login = data => this.api.post("/auth/login", data);
   register = data => this.api.post("/auth/register", data);
 }

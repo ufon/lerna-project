@@ -74,7 +74,7 @@ export class UsersService {
     const user = await this.findOneById(id);
     delete user.password;
 
-    let updatedUser = Object.assign(user, payload);
+    const updatedUser = Object.assign(user, payload);
     return await this.userRepository.save(updatedUser);
   }
 }

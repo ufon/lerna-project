@@ -1,20 +1,20 @@
 import { handleActions } from "redux-actions";
 
-import { getStreams, getStreamBySlug } from "../actions/stream";
+import { getStreams, getStreamBySlug, updateStream } from "../actions/stream";
 
 export const initialState = {
   streamList: {
     loading: true,
     success: undefined,
     errorMessage: "",
-    data: []
+    data: [],
   },
   currentStream: {
     loading: true,
     success: undefined,
     errorMessage: "",
-    data: {}
-  }
+    data: {},
+  },
 };
 
 const getStreamsRequest = state => ({
@@ -23,8 +23,8 @@ const getStreamsRequest = state => ({
     ...state.streamList,
     loading: true,
     success: undefined,
-    errorMessage: ""
-  }
+    errorMessage: "",
+  },
 });
 const getStreamsSuccess = (state, { payload }) => ({
   ...state,
@@ -33,8 +33,8 @@ const getStreamsSuccess = (state, { payload }) => ({
     loading: false,
     success: true,
     errorMessage: "",
-    data: payload
-  }
+    data: payload,
+  },
 });
 
 const getStreamRequest = state => ({
@@ -43,8 +43,8 @@ const getStreamRequest = state => ({
     ...state.currentStream,
     loading: true,
     success: undefined,
-    errorMessage: ""
-  }
+    errorMessage: "",
+  },
 });
 const getStreamSuccess = (state, { payload }) => ({
   ...state,
@@ -53,18 +53,39 @@ const getStreamSuccess = (state, { payload }) => ({
     loading: false,
     success: true,
     errorMessage: "",
-    data: payload
-  }
+    data: payload,
+  },
+});
+
+const updateStreamRequest = state => ({
+  ...state,
+  currentStream: {
+    ...state.currentStream,
+    loading: true,
+    success: undefined,
+    errorMessage: "",
+  },
+});
+const updateStreamSuccess = state => ({
+  ...state,
+  currentStream: {
+    ...state.currentStream,
+    loading: false,
+    success: true,
+    errorMessage: "",
+  },
 });
 
 const streamReducer = handleActions(
   {
     [getStreams.REQUEST]: getStreamsRequest,
     [getStreams.SUCCESS]: getStreamsSuccess,
+    [updateStream.REQUEST]: updateStreamRequest,
+    [updateStream.SUCCESS]: updateStreamSuccess,
     [getStreamBySlug.REQUEST]: getStreamRequest,
-    [getStreamBySlug.SUCCESS]: getStreamSuccess
+    [getStreamBySlug.SUCCESS]: getStreamSuccess,
   },
-  initialState
+  initialState,
 );
 
 export default streamReducer;

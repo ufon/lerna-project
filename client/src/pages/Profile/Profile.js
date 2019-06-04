@@ -2,9 +2,14 @@ import React, { Component } from "react";
 
 import { connect } from "react-redux";
 
-import { getProfile } from "../../actions/auth";
+import { Form, Input, Button, Layout, Alert, Tabs } from "antd";
+import { getProfile, updateProfile } from "../../actions/auth";
+import { updateStream } from "../../actions/stream";
+import "./Profile.scss";
 
-import { Form, Input, Button, Layout, Alert } from "antd";
+const { TabPane } = Tabs;
+
+const { TextArea } = Input;
 
 class Profile extends Component {
   componentDidMount() {
@@ -26,115 +31,160 @@ class Profile extends Component {
       // isSuccess,
       errorMessage,
       profile,
-      form: { getFieldDecorator }
+      updateProfile,
+      updateStream,
     } = this.props;
     // const { username, stream_key } = profile;
+
+    console.log(profile);
 
     return (
       <Layout.Content
         style={{
           padding: "24px 0",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
         }}
       >
-        <Form onSubmit={this.onHandleProfile} className="profile-form">
-          {errorMessage && (
-            <Alert
-              style={{
-                marginBottom: "24px"
-              }}
-              message={errorMessage.error}
-              type="error"
-            />
-          )}
-          <Form.Item style={{ marginBottom: 0 }}>
-            <Form.Item style={{ display: "inline-block", width: "50%" }}>
-              {getFieldDecorator("firstname", {
-                rules: [
-                  { required: true, message: "Please input your firstname!" }
-                ]
-              })(<Input value={profile.firstname} placeholder="First Name" />)}
-            </Form.Item>
-            <Form.Item style={{ display: "inline-block", width: "50%" }}>
-              {getFieldDecorator("lastname", {
-                rules: [
-                  { required: true, message: "Please input your lastname!" }
-                ]
-              })(<Input value={profile.lastname} placeholder="Last Name" />)}
-            </Form.Item>
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="profile-form-button"
-            >
-              Update profile
-            </Button>
-          </Form.Item>
-        </Form>
-
-        <Form onSubmit={this.onHandleRegister} className="stream-form">
-          {errorMessage && (
-            <Alert
-              style={{
-                marginBottom: "24px"
-              }}
-              message={errorMessage.error}
-              type="error"
-            />
-          )}
-          <Form.Item style={{ marginBottom: 0 }}>
-            <Form.Item style={{ display: "inline-block", width: "50%" }}>
-              {getFieldDecorator("firstname", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please input your title of your stream!"
-                  }
-                ]
-              })(<Input placeholder="Stream title" />)}
-            </Form.Item>
-            <Form.Item style={{ display: "inline-block", width: "50%" }}>
-              {getFieldDecorator("lastname", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please input description of your stream!"
-                  }
-                ]
-              })(<Input placeholder="Stream description" />)}
-            </Form.Item>
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="stream-form-button"
-            >
-              Update stream
-            </Button>
-          </Form.Item>
-        </Form>
+        <div className="card-container">
+          <Tabs type="card">
+            <TabPane tab="Main info" key="1">
+              <p>How to start stream</p>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Vitae turpis massa sed elementum tempus
+                egestas sed. A iaculis at erat pellentesque adipiscing commodo elit at imperdiet.
+                Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Feugiat
+                sed lectus vestibulum mattis ullamcorper velit. Adipiscing diam donec adipiscing
+                tristique risus nec. Nunc sed blandit libero volutpat sed cras ornare. Vulputate
+                sapien nec sagittis aliquam malesuada bibendum arcu. In est ante in nibh mauris
+                cursus. Sed lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi. In hac
+                habitasse platea dictumst quisque sagittis purus sit. Feugiat sed lectus vestibulum
+                mattis ullamcorper velit sed ullamcorper morbi. Euismod quis viverra nibh cras
+                pulvinar mattis nunc sed blandit. Iaculis urna id volutpat lacus. Leo urna molestie
+                at elementum eu facilisis sed odio morbi. Eget magna fermentum iaculis eu non. Ut
+                etiam sit amet nisl purus. Pharetra pharetra massa massa ultricies mi quis
+                hendrerit. Et ultrices neque ornare aenean euismod elementum nisi quis eleifend.
+                Aliquet nibh praesent tristique magna. Nascetur ridiculus mus mauris vitae. Arcu
+                risus quis varius quam quisque id. Dui accumsan sit amet nulla facilisi.
+              </p>
+            </TabPane>
+            <TabPane tab="Update personal info" key="2">
+              <UpdateProfileForm updateProfile={updateProfile} profile={profile} />
+            </TabPane>
+            <TabPane tab="Update stream info" key="3">
+              <UpdateStreamForm updateStream={updateStream} stream={profile.stream} />
+            </TabPane>
+          </Tabs>
+        </div>
       </Layout.Content>
     );
   }
 }
 
-const WrappedProfile = Form.create({ name: "profile" })(Profile);
+const UpdateProfileForm = Form.create({ name: "updateProfile" })(props => {
+  const { getFieldDecorator, validateFields } = props.form;
+  const { profile, updateProfile } = props;
+  console.log(profile);
+
+  const onHandleProfile = event => {
+    event.preventDefault();
+
+    validateFields((err, values) => {
+      if (!err) {
+        const { firstname, lastname } = values;
+        updateProfile({ firstname, lastname });
+      }
+    });
+  };
+
+  return (
+    <Form onSubmit={onHandleProfile} className="profile-form">
+      <Form.Item style={{ marginBottom: 0 }}>
+        <Form.Item>
+          {getFieldDecorator("firstname", {
+            initialValue: profile.firstname,
+            rules: [{ required: true, message: "Please input your firstname!" }],
+          })(<Input placeholder="First Name" />)}
+        </Form.Item>
+        <Form.Item>
+          {getFieldDecorator("lastname", {
+            initialValue: profile.lastname,
+            rules: [{ required: true, message: "Please input your lastname!" }],
+          })(<Input placeholder="Last Name" />)}
+        </Form.Item>
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit" className="profile-form-button">
+          Update profile
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+});
+
+const UpdateStreamForm = Form.create({ name: "updateStream" })(props => {
+  const { getFieldDecorator, validateFields } = props.form;
+  const { stream, updateStream } = props;
+  console.log(stream);
+
+  const onHandleStream = event => {
+    event.preventDefault();
+
+    validateFields((err, values) => {
+      if (!err) {
+        const { title, description } = values;
+        updateStream({ title, description });
+      }
+    });
+  };
+
+  return (
+    <Form onSubmit={onHandleStream} className="stream-form">
+      <Form.Item style={{ marginBottom: 0 }}>
+        <Form.Item>
+          {getFieldDecorator("title", {
+            initialValue: stream.title,
+            rules: [
+              {
+                required: true,
+                message: "Please input your title of your stream!",
+              },
+            ],
+          })(<Input placeholder="Stream title" />)}
+        </Form.Item>
+        <Form.Item>
+          {getFieldDecorator("description", {
+            initialValue: stream.description,
+            rules: [
+              {
+                required: true,
+                message: "Please input description of your stream!",
+              },
+            ],
+          })(<TextArea rows={4} />)}
+        </Form.Item>
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit" className="stream-form-button">
+          Update stream
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+});
 
 const mapStateToProps = state => ({
   profile: state.app.authReducer.user.data,
-  isSuccess: state.app.authReducer.user.success
+  isSuccess: state.app.authReducer.user.success,
 });
 
 const mapDispatchToProps = {
-  getProfile: getProfile.request
+  getProfile: getProfile.request,
+  updateProfile: updateProfile.request,
+  updateStream: updateStream.request,
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(WrappedProfile);
+  mapDispatchToProps,
+)(Profile);

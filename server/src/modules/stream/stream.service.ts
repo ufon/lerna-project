@@ -58,9 +58,8 @@ export class StreamService {
     );
   }
 
-  async update(id: number, payload: UpdateStreamDto): Promise<Stream> {
-    const stream = await this.findOneById(id);
-
+  async update(slug: string, payload: UpdateStreamDto): Promise<Stream> {
+    const stream = await this.findOneBySlug(slug);
     const updatedStream = Object.assign(stream, payload);
     return await this.streamRepository.save(updatedStream);
   }
