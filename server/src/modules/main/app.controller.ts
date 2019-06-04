@@ -50,6 +50,10 @@ export class AppController {
     @Req() request,
     @Body() payload: UpdateStreamDto,
   ): Promise<any> {
-    return this.streamService.update(request.user.username, payload);
+    const stream = this.streamService.findOneBySlug(request.user.username);
+    return this.streamService.update(request.user.username, {
+      ...stream,
+      ...payload,
+    });
   }
 }

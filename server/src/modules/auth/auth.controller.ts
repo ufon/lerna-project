@@ -80,7 +80,10 @@ export class AuthController {
 
     if (stream && stream.active) {
       console.log('Translation was ended!');
-      await this.streamService.update(stream.id, { ...stream, active: false });
+      await this.streamService.update(stream.slug, {
+        ...stream,
+        active: false,
+      });
     } else {
       console.log('Validation error!');
       res.status(HttpStatus.NOT_FOUND).send();
