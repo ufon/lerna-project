@@ -35,12 +35,12 @@ export class StreamController {
     return this.streamService.create(createStreamDto);
   }
 
-  @Post(':id')
+  @Post(':slug')
   async update(
-    @Param('id')
-    id,
+    @Param('slug')
+    slug,
     @Body() updateStreamDto: UpdateStreamDto,
   ) {
-    return this.streamService.update(id, updateStreamDto);
+    return this.streamService.update(slug, updateStreamDto);
   }
 }

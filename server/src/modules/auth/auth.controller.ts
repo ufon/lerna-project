@@ -58,7 +58,7 @@ export class AuthController {
 
     if (user && user.stream_key === stream_key) {
       console.log('Translation was started!');
-      await this.streamService.update(stream.id, { ...stream, active: true });
+      await this.streamService.update(stream.slug, { ...stream, active: true });
       res.status(HttpStatus.CREATED).send();
     } else {
       console.log('Validation error!');
